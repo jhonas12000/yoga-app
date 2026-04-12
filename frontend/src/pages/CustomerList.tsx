@@ -12,7 +12,7 @@ function CustomerList() {
 
   const fetchCustomers = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/customers");
+      const res = await axios.get("/api/customers");
       setCustomers(res.data);
     } catch (err) {
       console.log(err);

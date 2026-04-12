@@ -12,7 +12,7 @@ function InstructorList() {
 
   const fetchInstructors = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/instructors");
+      const res = await axios.get("/api/instructors");
       setInstructors(res.data);
     } catch (err) {
       console.log(err);

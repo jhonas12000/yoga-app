@@ -21,7 +21,7 @@ function CustomerForm() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:3001/api/customers", form);
+      const res = await axios.post("/api/customers", form);
       alert(res.data.message);
       navigate("/customers/list");
     } catch (err: any) {

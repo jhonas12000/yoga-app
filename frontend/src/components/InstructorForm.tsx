@@ -21,7 +21,7 @@ function InstructorForm() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:3001/api/instructors", form);
+      const res = await axios.post("/api/instructors", form);
       alert(res.data.message);
       navigate("/instructors/list");
     } catch (err: any) {
