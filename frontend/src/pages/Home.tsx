@@ -12,8 +12,8 @@ function Home() {
 
   const fetchData = async () => {
     try {
-      const instructorRes = await axios.get("http://localhost:3001/api/instructors");
-      const customerRes = await axios.get("http://localhost:3001/api/customers");
+      const instructorRes = await axios.get("/api/instructors");
+      const customerRes = await axios.get("/api/customers");
 
       console.log("Instructors:", instructorRes.data);
       console.log("Customers:", customerRes.data);
