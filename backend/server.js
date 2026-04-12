@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const express = require("express");
+const mongoose = require("mongoose");
 const instructorRoutes = require("./routes/instructorRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const cors = require("cors");
@@ -22,11 +24,15 @@ mongoose.connect(uri)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 
-// Serve frontend
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
+// ✅ DEFINE THIS
+const frontendPath = path.join(__dirname, "..", "frontend", "dist");
 
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+// Serve frontend
+app.use(express.static(frontendPath));
+
+// ✅ fallback route
+app.use((req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 const PORT = process.env.PORT || 5000;
