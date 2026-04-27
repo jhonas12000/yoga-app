@@ -15,7 +15,7 @@ function CustomerList() {
       const res = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/customers`
       );
-    setCustomers(res.data);
+    setCustomers(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.log(err);
     }
