@@ -18,7 +18,7 @@ function App() {
 
       {/* Customer */}
       <Route path="/customers" element={<CustomerForm />} />
-      <Route path="/customers/list" element={<CustomerList />} />
+      <Route path="/customers/add" element={<CustomerList />} />
       <Route path="/add-class" element={<AddClass />} />
     </Routes>
     
