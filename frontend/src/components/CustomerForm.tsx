@@ -27,7 +27,7 @@ function CustomerForm() {
         form
       );
       alert(res.data.message);
-      navigate("/customers/list");
+      navigate("/customers");
     } catch (err: any) {
       if (err.response) {
         alert(err.response.data.message);
