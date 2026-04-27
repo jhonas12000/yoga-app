@@ -12,8 +12,10 @@ function CustomerList() {
 
   const fetchCustomers = async () => {
     try {
-      const res = await axios.get("/api/customers");
-      setCustomers(res.data);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/customers`
+      );
+    setCustomers(res.data);
     } catch (err) {
       console.log(err);
     }

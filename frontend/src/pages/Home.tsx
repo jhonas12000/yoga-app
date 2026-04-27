@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 function Home() {
   const [instructors, setInstructors] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
+  const [classes, setClasses] = useState<any[]>([]);
 
   useEffect(() => {
     fetchData();
@@ -12,14 +13,25 @@ function Home() {
 
   const fetchData = async () => {
     try {
-      const instructorRes = await axios.get("/api/instructors");
-      const customerRes = await axios.get("/api/customers");
+      const instructorRes = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/instructors`
+      );
+
+      const customerRes = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/customers`
+      );
+
+      const classRes = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/classes`
+      );
 
       console.log("Instructors:", instructorRes.data);
       console.log("Customers:", customerRes.data);
+      console.log("Classes:", classRes.data);
 
       setInstructors(instructorRes.data);
       setCustomers(customerRes.data);
+      setClasses(classRes.data);
     } catch (error) {
       console.log(error);
     }
@@ -47,16 +59,21 @@ function Home() {
             Manage Customers
           </button>
         </Link>
+
+        <Link to="/add-class">
+          <button style={{ marginLeft: "10px" }}>
+            Add Class
+          </button>
+        </Link>
       </div>
 
       <hr style={{ margin: "30px 0" }} />
 
-      {/* ✅ FIXED: Proper wrapper for both sections */}
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          maxWidth: "700px",
+          maxWidth: "1100px",
           margin: "0 auto",
           alignItems: "flex-start",
           gap: "40px"
@@ -101,26 +118,62 @@ function Home() {
             <ul style={{ listStyle: "none", padding: 0 }}>
               {customers.map((cust) => (
                 <li
-                    key={cust._id}
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginBottom: "10px"
-                    }}
-                  >
-                    <span style={{ marginRight: "8px" }}>
-                      {cust.firstName} {cust.lastName}
-                    </span>
+                  key={cust._id}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: "10px"
+                  }}
+                >
+                  <span style={{ marginRight: "8px" }}>
+                    {cust.firstName} {cust.lastName}
+                  </span>
 
-                    <span style={{ color: "gray" }}>
-                      ({cust.email})
-                    </span>
-                  </li>
+                  <span style={{ color: "gray" }}>
+                    ({cust.email})
+                  </span>
+                </li>
               ))}
             </ul>
           )}
         </div>
+
+        {/* Class List */}
+        <div style={{ flex: 1 }}>
+          <h2>Classes</h2>
+          {classes.length === 0 ? (
+            <p>No classes found</p>
+          ) : (
+            <ul style={{ listStyle: "none", padding: 0 }}>
+              {classes.map((cls) => (
+                <li
+                  key={cls._id}
+                  style={{
+                    marginBottom: "15px",
+                    textAlign: "center"
+                  }}
+                >
+                  <div>
+                    <strong>{cls.title}</strong>
+                  </div>
+
+                  <div style={{ color: "gray" }}>
+                    Instructor ID: {cls.instructorId}
+                  </div>
+
+                  <div style={{ fontSize: "14px", color: "#666" }}>
+                    Date: {new Date(cls.date).toLocaleDateString()}
+                  </div>
+
+                  <div style={{ fontSize: "14px", color: "#666" }}>
+                    Capacity: {cls.capacity}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+</div>
       </div>
     </div>
   );

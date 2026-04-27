@@ -4,6 +4,7 @@ import InstructorForm from "./components/InstructorForm";
 import CustomerForm from "./components/CustomerForm";
 import InstructorList from "./pages/InstructorList";
 import CustomerList from "./pages/CustomerList";
+import AddClass from "./components/ClassForm";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       {/* Customer */}
       <Route path="/customers" element={<CustomerForm />} />
       <Route path="/customers/list" element={<CustomerList />} />
+      <Route path="/add-class" element={<AddClass />} />
     </Routes>
     
   );
