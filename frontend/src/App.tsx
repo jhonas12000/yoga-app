@@ -15,10 +15,9 @@ function App() {
       {/* Instructor */}
       <Route path="/instructors/add" element={<InstructorForm />} />
       <Route path="/instructors/list" element={<InstructorList />} />
-
       {/* Customer */}
-      <Route path="/customers" element={<CustomerForm />} />
-      <Route path="/customers/add" element={<CustomerList />} />
+      <Route path="/customers" element={<CustomerList />} />
+      <Route path="/customers/add" element={<CustomerForm />} />
       <Route path="/add-class" element={<AddClass />} />
     </Routes>
     
