@@ -2,16 +2,16 @@ const express = require("express");
 const mongoose = require("mongoose");
 const instructorRoutes = require("./routes/instructorRoutes");
 const customerRoutes = require("./routes/customerRoutes");
-const cors = require("cors");
 const classRoutes = require("./routes/classRoutes");
-//const path = require("path");
+const cors = require("cors");
+const path = require("path");
 
 const app = express();
 
-//app.use(cors());
 app.use(cors({
   origin: "http://localhost:5173"
 }));
+
 app.use(express.json());
 
 app.use("/api/instructors", instructorRoutes);
@@ -27,21 +27,16 @@ mongoose.connect(uri)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 
-//  DEFINE THIS
-//const frontendPath = path.join(__dirname, "..", "frontend", "dist");
+/*
+   Serve React frontend after API routes
+*/
+const frontendPath = path.join(__dirname, "..", "frontend", "dist");
 
-// Serve frontend
-//app.use(express.static(frontendPath));
+app.use(express.static(frontendPath));
 
-//  fallback route
-// app.use((req, res) => {
-//   res.sendFile(path.join(frontendPath, "index.html"));
-// });
-
-app.get("/", (req, res) => {
-  res.send("Backend is running...");
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
-
 
 const PORT = process.env.PORT || 3001;
 
