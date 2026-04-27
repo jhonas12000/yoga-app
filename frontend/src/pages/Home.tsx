@@ -13,17 +13,11 @@ function Home() {
 
   const fetchData = async () => {
     try {
-      const instructorRes = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/instructors`
-      );
+      const instructorRes = await axios.get("/api/instructors");
 
-      const customerRes = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/customers`
-      );
+      const customerRes = await axios.get("/api/customers");
 
-      const classRes = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/classes`
-      );
+      const classRes = await axios.get("/api/classes");
 
       console.log("Instructors:", instructorRes.data);
       console.log("Customers:", customerRes.data);

@@ -22,10 +22,7 @@ function CustomerForm() {
 
     try {
       //const res = await axios.post("/api/customers", form);
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/customers`,
-        form
-      );
+      const res = await axios.post("/api/customers", form);
       alert(res.data.message);
       navigate("/customers");
     } catch (err: any) {

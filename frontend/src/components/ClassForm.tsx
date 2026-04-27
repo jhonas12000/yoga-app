@@ -27,10 +27,7 @@ const AddClass = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/classes`,
-        form
-      );
+      const res = await axios.post("/api/classes", form);
 
       alert(res.data.message);
       navigate("/");

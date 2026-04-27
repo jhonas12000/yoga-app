@@ -12,9 +12,7 @@ function InstructorList() {
 
   const fetchInstructors = async () => {
     try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/instructors`
-      );
+      const res = await axios.get("/api/instructors");
       setInstructors(res.data);
     } catch (err) {
       console.log(err);

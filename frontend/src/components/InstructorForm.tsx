@@ -22,10 +22,7 @@ function InstructorForm() {
 
     try {
       //const res = await axios.post("/api/instructors", form);
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/instructors`,
-        form
-      );
+      const res = await axios.post("/api/instructors", form);
       alert(res.data.message);
       navigate("/instructors/list");
     } catch (err: any) {
