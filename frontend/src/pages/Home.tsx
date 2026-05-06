@@ -79,6 +79,11 @@ function Home() {
             View Sales
           </button>
         </Link>
+        <Link to="/reports">
+          <button style={{ marginLeft: "10px" }}>
+            Reports
+          </button>
+        </Link>
       </div>
 
       <hr style={{ margin: "30px 0" }} />

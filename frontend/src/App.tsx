@@ -9,6 +9,7 @@ import Attendance from "./pages/Attendance";
 import AttendanceList from "./pages/AttendanceList";
 import AddSale from "./pages/AddSale";
 import SaleList from "./pages/SaleList";
+import Reports from "./pages/Reports";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
       <Route path="/attendance-list" element={<AttendanceList />} />
       <Route path="/add-sale" element={<AddSale />} />
       <Route path="/sales" element={<SaleList />} />
+      <Route path="/reports" element={<Reports />} />
     </Routes>
     
   );

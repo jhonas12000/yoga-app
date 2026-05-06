@@ -7,6 +7,7 @@ const cors = require("cors");
 const path = require("path");
 const attendanceRoutes = require("./routes/attendanceRoutes");
 const saleRoutes = require("./routes/saleRoutes");
+const reportRoutes = require("./routes/reportRoutes");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/api/customers", customerRoutes);
 app.use("/api/classes", classRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/sales", saleRoutes);
+app.use("/api/reports", reportRoutes);
 
 console.log("Starting server...");
 
