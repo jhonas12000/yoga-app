@@ -59,6 +59,16 @@ function Home() {
             Add Class
           </button>
         </Link>
+        <Link to="/attendance">
+          <button style={{ marginLeft: "10px" }}>
+            Record Attendance
+          </button>
+        </Link>
+        <Link to="/attendance-list">
+          <button style={{ marginLeft: "10px" }}>
+            View Attendance 
+          </button>
+        </Link>
       </div>
 
       <hr style={{ margin: "30px 0" }} />
