@@ -7,6 +7,8 @@ import CustomerList from "./pages/CustomerList";
 import AddClass from "./components/ClassForm";
 import Attendance from "./pages/Attendance";
 import AttendanceList from "./pages/AttendanceList";
+import AddSale from "./pages/AddSale";
+import SaleList from "./pages/SaleList";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
       <Route path="/add-class" element={<AddClass />} />
       <Route path="/attendance" element={<Attendance />} />
       <Route path="/attendance-list" element={<AttendanceList />} />
+      <Route path="/add-sale" element={<AddSale />} />
+      <Route path="/sales" element={<SaleList />} />
     </Routes>
     
   );

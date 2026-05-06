@@ -6,6 +6,7 @@ const classRoutes = require("./routes/classRoutes");
 const cors = require("cors");
 const path = require("path");
 const attendanceRoutes = require("./routes/attendanceRoutes");
+const saleRoutes = require("./routes/saleRoutes");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use("/api/instructors", instructorRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/classes", classRoutes);
 app.use("/api/attendance", attendanceRoutes);
+app.use("/api/sales", saleRoutes);
 
 console.log("Starting server...");
 
@@ -29,25 +31,13 @@ mongoose.connect(uri)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 
-/*
-   Serve React frontend after API routes
-*/
-// const frontendPath = path.join(__dirname, "..", "frontend", "dist");
 
-// app.use(express.static(frontendPath));
-
-// app.use((req, res) => {
-//   res.sendFile(path.join(frontendPath, "index.html"));
-// });
 
 if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "..", "frontend", "dist");
 
   app.use(express.static(frontendPath));
 
-  // app.get("/*", (req, res) => {
-  //   res.sendFile(path.join(frontendPath, "index.html"));
-  // });
   app.use((req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });

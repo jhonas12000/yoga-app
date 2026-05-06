@@ -69,6 +69,16 @@ function Home() {
             View Attendance 
           </button>
         </Link>
+        <Link to="/add-sale">
+          <button style={{ marginLeft: "10px" }}>
+            Record Sale
+          </button>
+        </Link>
+        <Link to="/sales">
+          <button style={{ marginLeft: "10px" }}>
+            View Sales
+          </button>
+        </Link>
       </div>
 
       <hr style={{ margin: "30px 0" }} />
