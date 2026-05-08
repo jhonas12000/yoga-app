@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AddClass = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const [form, setForm] = useState({
     title: "",
@@ -11,6 +12,27 @@ const AddClass = () => {
     date: "",
     capacity: "",
   });
+
+  useEffect(() => {
+    const fetchClass = async () => {
+      if (!id) return;
+
+      try {
+        const res = await axios.get(`/api/classes/${id}`);
+        setForm({
+          title: res.data.title || "",
+          instructorId: res.data.instructorId || "",
+          date: res.data.date ? res.data.date.split("T")[0] : "",
+          capacity: res.data.capacity ? String(res.data.capacity) : "",
+        });
+      } catch (error) {
+        console.error(error);
+        alert("Unable to load class data.");
+      }
+    };
+
+    fetchClass();
+  }, [id]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -21,27 +43,24 @@ const AddClass = () => {
     });
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        "/api/classes",
-        form
-      );
+      const res = id
+        ? await axios.put(`/api/classes/${id}`, form)
+        : await axios.post("/api/classes", form);
 
       alert(res.data.message);
 
       navigate("/classes/list");
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-
-      alert(
-        error.response?.data?.message ||
-        "Failed to add class"
-      );
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.data?.message || "Failed to add class");
+      } else {
+        alert("Failed to add class");
+      }
     }
   };
 
@@ -61,7 +80,7 @@ const AddClass = () => {
         {/* Heading */}
         <div className="mb-10">
           <h1 className="text-4xl font-bold text-gray-800 mb-3">
-            Add Yoga Class
+            {id ? "Edit Yoga Class" : "Add Yoga Class"}
           </h1>
 
           <p className="text-gray-500">
@@ -147,7 +166,7 @@ const AddClass = () => {
             type="submit"
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl text-lg font-semibold transition duration-300 shadow-lg"
           >
-            Save Class
+            {id ? "Update Class" : "Save Class"}
           </button>
         </form>
       </div>

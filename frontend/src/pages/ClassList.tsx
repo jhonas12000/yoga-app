@@ -2,26 +2,59 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+type YogaClass = {
+  _id: string;
+  title: string;
+  instructorId: string;
+  date: string;
+  capacity: number | string;
+};
+
 function ClassList() {
   const navigate = useNavigate();
 
-  const [classes, setClasses] = useState<any[]>([]);
-
-  useEffect(() => {
-    fetchClasses();
-  }, []);
+  const [classes, setClasses] = useState<YogaClass[]>([]);
 
   const fetchClasses = async () => {
     try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/classes`
-      );
+      const res = await axios.get("/api/classes");
 
       console.log("Classes:", res.data);
 
       setClasses(Array.isArray(res.data) ? res.data : []);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const loadClasses = async () => {
+      try {
+        const res = await axios.get("/api/classes");
+
+        console.log("Classes:", res.data);
+
+        setClasses(Array.isArray(res.data) ? res.data : []);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    loadClasses();
+  }, []);
+
+  const handleDelete = async (id: string | undefined) => {
+    if (!id) return;
+
+    const confirmed = window.confirm("Delete this class?");
+    if (!confirmed) return;
+
+    try {
+      await axios.delete(`/api/classes/${id}`);
+      fetchClasses();
     } catch (err) {
       console.log(err);
+      alert("Failed to delete class");
     }
   };
 
@@ -120,15 +153,17 @@ function ClassList() {
                       {/* Update */}
                       <button
                         title="Update (Coming Soon)"
-                        className="text-indigo-600 opacity-50 cursor-not-allowed"
+                        className="text-indigo-600 hover:text-indigo-800 transition"
+                        onClick={() => navigate(`/classes/edit/${cls._id}`)}
                       >
                         ✏️
                       </button>
 
                       {/* Delete */}
                       <button
-                        title="Delete (Coming Soon)"
-                        className="text-red-500 opacity-50 cursor-not-allowed"
+                        title="Delete"
+                        className="text-red-500 hover:text-red-700 transition"
+                        onClick={() => handleDelete(cls._id)}
                       >
                         🗑️
                       </button>

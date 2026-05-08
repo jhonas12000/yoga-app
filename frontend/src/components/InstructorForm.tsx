@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function InstructorForm() {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const [form, setForm] = useState({
     firstName: "",
@@ -14,25 +15,50 @@ function InstructorForm() {
     preferredContact: "email",
   });
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e: any) => {
+  useEffect(() => {
+    const fetchInstructor = async () => {
+      if (!id) return;
+
+      try {
+        const res = await axios.get(`/api/instructors/${id}`);
+        setForm({
+          firstName: res.data.firstName || "",
+          lastName: res.data.lastName || "",
+          address: res.data.address || "",
+          phone: res.data.phone || "",
+          email: res.data.email || "",
+          preferredContact: res.data.preferredContact || "email",
+        });
+      } catch (error) {
+        console.error(error);
+        alert("Unable to load instructor data.");
+      }
+    };
+
+    fetchInstructor();
+  }, [id]);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("/api/instructors", form);
+      const res = id
+        ? await axios.put(`/api/instructors/${id}`, form)
+        : await axios.post("/api/instructors", form);
 
       alert(res.data.message);
 
       navigate("/instructors/list");
-    } catch (err: any) {
-      if (err.response) {
-        alert(err.response.data.message);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        alert(error.response.data?.message || "Server error");
       } else {
         alert("Server error");
       }
@@ -55,7 +81,7 @@ function InstructorForm() {
         {/* Heading */}
         <div className="mb-10">
           <h1 className="text-4xl font-bold text-gray-800 mb-3">
-            Add Instructor
+            {id ? "Edit Instructor" : "Add Instructor"}
           </h1>
 
           <p className="text-gray-500">
@@ -75,6 +101,7 @@ function InstructorForm() {
             <input
               name="firstName"
               placeholder="Enter first name"
+              value={form.firstName}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
@@ -89,6 +116,7 @@ function InstructorForm() {
             <input
               name="lastName"
               placeholder="Enter last name"
+              value={form.lastName}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
@@ -103,6 +131,7 @@ function InstructorForm() {
             <input
               name="address"
               placeholder="Enter address"
+              value={form.address}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
@@ -117,6 +146,7 @@ function InstructorForm() {
             <input
               name="phone"
               placeholder="Enter phone number"
+              value={form.phone}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
@@ -131,6 +161,7 @@ function InstructorForm() {
             <input
               name="email"
               placeholder="Enter email"
+              value={form.email}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
@@ -144,6 +175,7 @@ function InstructorForm() {
 
             <select
               name="preferredContact"
+              value={form.preferredContact}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
@@ -157,7 +189,7 @@ function InstructorForm() {
             type="submit"
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl text-lg font-semibold transition duration-300 shadow-lg"
           >
-            Add Instructor
+            {id ? "Update Instructor" : "Add Instructor"}
           </button>
         </form>
       </div>

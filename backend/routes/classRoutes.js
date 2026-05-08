@@ -3,8 +3,13 @@ const router = express.Router();
 const Class = require("../models/Class");
 
 const generateClassId = async () => {
-  const count = await Class.countDocuments();
-  return "C" + String(count + 1).padStart(3, "0");
+  const lastClass = await Class.findOne().sort({ classId: -1 });
+  if (lastClass) {
+    const lastId = parseInt(lastClass.classId.substring(1));
+    return "C" + String(lastId + 1).padStart(3, "0");
+  } else {
+    return "C001";
+  }
 };
 
 router.get("/", async (req, res) => {
@@ -47,6 +52,50 @@ router.post("/", async (req, res) => {
     res.status(500).json({
       error: error.message
     });
+  }
+});
+
+// Delete class
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Class.findByIdAndDelete(id);
+    res.json({ message: "Class deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Get class by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const yogaClass = await Class.findById(id);
+    if (!yogaClass) {
+      return res.status(404).json({ message: "Class not found" });
+    }
+
+    res.json(yogaClass);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Update class
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+    const updatedClass = await Class.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
+    if (!updatedClass) {
+      return res.status(404).json({ message: "Class not found" });
+    }
+    res.json({ message: "Class updated successfully", class: updatedClass });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

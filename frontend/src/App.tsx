@@ -20,15 +20,18 @@ function App() {
 
       {/* Instructor */}
       <Route path="/instructors/add" element={<InstructorForm />} />
+      <Route path="/instructors/edit/:id" element={<InstructorForm />} />
       <Route path="/instructors/list" element={<InstructorList />} />
       {/* Customer */}
       <Route path="/customers" element={<CustomerList />} />
       <Route path="/customers/add" element={<CustomerForm />} />
+      <Route path="/customers/edit/:id" element={<CustomerForm />} />
       <Route path="/classes/add" element={<AddClass />} />
+      <Route path="/classes/edit/:id" element={<AddClass />} />
       <Route path="/classes/list" element={<ClassList />} />
       <Route path="/attendance" element={<Attendance />} />
       <Route path="/attendance-list" element={<AttendanceList />} />
-      <Route path="/add-sale" element={<AddSale />} />
+      <Route path="/sales/add" element={<AddSale />} />
       <Route path="/sales" element={<SaleList />} />
       <Route path="/reports" element={<Reports />} />
     </Routes>

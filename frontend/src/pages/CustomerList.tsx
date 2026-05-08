@@ -4,22 +4,55 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+type Customer = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+};
+
 function CustomerList() {
   const navigate = useNavigate();
-  const [customers, setCustomers] = useState<any[]>([]);
-
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
+  const [customers, setCustomers] = useState<Customer[]>([]);
 
   const fetchCustomers = async () => {
     try {
       const res = await axios.get("/api/customers");
       setCustomers(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  useEffect(() => {
+    const loadCustomers = async () => {
+      try {
+        const res = await axios.get("/api/customers");
+        setCustomers(Array.isArray(res.data) ? res.data : []);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    loadCustomers();
+  }, []);
+
+  const handleDelete = async (id: string | undefined) => {
+    if (!id) return;
+
+    const confirmed = window.confirm("Delete this customer?");
+    if (!confirmed) return;
+
+    try {
+      await axios.delete(`/api/customers/${id}`);
+      fetchCustomers();
+    } catch (err) {
+      console.log(err);
+      alert("Failed to delete customer");
+    }
+  };
+
 
   return (
   <div className="min-h-screen bg-gray-100 px-6 py-10">
@@ -97,6 +130,7 @@ function CustomerList() {
                     <button
                       title="Update"
                       className="text-indigo-600 hover:text-indigo-800 transition"
+                      onClick={() => navigate(`/customers/edit/${cust._id}`)}
                     >
                       ✏️
                     </button>
@@ -105,6 +139,7 @@ function CustomerList() {
                     <button
                       title="Delete"
                       className="text-red-500 hover:text-red-700 transition"
+                      onClick={() => handleDelete(cust._id)}
                     >
                       🗑️
                     </button>

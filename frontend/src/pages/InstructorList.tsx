@@ -2,22 +2,55 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+type Instructor = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+};
+
 function InstructorList() {
   const navigate = useNavigate();
-  const [instructors, setInstructors] = useState<any[]>([]);
-
-  useEffect(() => {
-    fetchInstructors();
-  }, []);
+  const [instructors, setInstructors] = useState<Instructor[]>([]);
 
   const fetchInstructors = async () => {
     try {
       const res = await axios.get("/api/instructors");
       setInstructors(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  useEffect(() => {
+    const loadInstructors = async () => {
+      try {
+        const res = await axios.get("/api/instructors");
+        setInstructors(Array.isArray(res.data) ? res.data : []);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    loadInstructors();
+  }, []);
+
+  const handleDelete = async (id: string | undefined) => {
+    if (!id) return;
+
+    const confirmed = window.confirm("Delete this instructor?");
+    if (!confirmed) return;
+
+    try {
+      await axios.delete(`/api/instructors/${id}`);
+      fetchInstructors();
+    } catch (err) {
+      console.log(err);
+      alert("Failed to delete instructor");
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-gray-100 px-6 py-10">
@@ -96,6 +129,7 @@ function InstructorList() {
                       <button
                         title="Update"
                         className="text-indigo-600 hover:text-indigo-800 transition"
+                        onClick={() => navigate(`/instructors/edit/${inst._id}`)}
                       >
                         ✏️
                       </button>
@@ -104,6 +138,7 @@ function InstructorList() {
                       <button
                         title="Delete"
                         className="text-red-500 hover:text-red-700 transition"
+                        onClick={() => handleDelete(inst._id)}
                       >
                         🗑️
                       </button>

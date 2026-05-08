@@ -59,4 +59,48 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Get customer by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const customer = await Customer.findById(id);
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    res.json(customer);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Update customer
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+    const updatedCustomer = await Customer.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
+    if (!updatedCustomer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+    res.json({ message: "Customer updated successfully", customer: updatedCustomer });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Delete customer
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Customer.findByIdAndDelete(id);
+    res.json({ message: "Customer deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;
