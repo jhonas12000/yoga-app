@@ -9,7 +9,7 @@ const AddClass = () => {
     title: "",
     instructorId: "",
     date: "",
-    capacity: ""
+    capacity: "",
   });
 
   const handleChange = (
@@ -17,7 +17,7 @@ const AddClass = () => {
   ) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -27,12 +27,17 @@ const AddClass = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("/api/classes", form);
+      const res = await axios.post(
+        "/api/classes",
+        form
+      );
 
       alert(res.data.message);
-      navigate("/");
+
+      navigate("/classes/list");
     } catch (error: any) {
       console.error(error);
+
       alert(
         error.response?.data?.message ||
         "Failed to add class"
@@ -41,64 +46,111 @@ const AddClass = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-        <button onClick={() => navigate("/")} style={{ marginBottom: "20px" }}>
-        ⬅ Back to Home
-      </button>
-      <h1>Add Class</h1>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-6 py-12">
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="title"
-          placeholder="Class Title"
-          value={form.title}
-          onChange={handleChange}
-          required
-        />
-        <br /><br />
+      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-10">
 
-        <input
-          type="text"
-          name="instructorId"
-          placeholder="Instructor ID (ex: I001)"
-          value={form.instructorId}
-          onChange={handleChange}
-          required
-        />
-        <br /><br />
-
-        <input
-          type="date"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-          required
-        />
-        <br /><br />
-
-        <input
-          type="number"
-          name="capacity"
-          placeholder="Capacity"
-          value={form.capacity}
-          onChange={handleChange}
-          required
-        />
-        <br /><br />
-
-        <button type="submit">
-          Save Class
-        </button>
-
+        {/* Back Button */}
         <button
-          type="button"
           onClick={() => navigate(-1)}
-          style={{ marginLeft: "10px" }}
+          className="text-indigo-600 hover:text-indigo-800 font-medium mb-6"
         >
-          Back
+          ← Go Back
         </button>
-      </form>
+
+        {/* Heading */}
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold text-gray-800 mb-3">
+            Add Yoga Class
+          </h1>
+
+          <p className="text-gray-500">
+            Create and schedule a new yoga class session.
+          </p>
+        </div>
+
+        {/* Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+        >
+
+          {/* Class Title */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Class Title
+            </label>
+
+            <input
+              type="text"
+              name="title"
+              placeholder="Enter class title"
+              value={form.title}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Instructor ID */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Instructor ID
+            </label>
+
+            <input
+              type="text"
+              name="instructorId"
+              placeholder="Instructor ID (ex: I001)"
+              value={form.instructorId}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Date */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Class Date
+            </label>
+
+            <input
+              type="date"
+              name="date"
+              value={form.date}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Capacity */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Capacity
+            </label>
+
+            <input
+              type="number"
+              name="capacity"
+              placeholder="Enter class capacity"
+              value={form.capacity}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl text-lg font-semibold transition duration-300 shadow-lg"
+          >
+            Save Class
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

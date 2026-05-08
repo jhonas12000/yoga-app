@@ -10,6 +10,7 @@ import AttendanceList from "./pages/AttendanceList";
 import AddSale from "./pages/AddSale";
 import SaleList from "./pages/SaleList";
 import Reports from "./pages/Reports";
+import ClassList from "./pages/ClassList";
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
       {/* Customer */}
       <Route path="/customers" element={<CustomerList />} />
       <Route path="/customers/add" element={<CustomerForm />} />
-      <Route path="/add-class" element={<AddClass />} />
+      <Route path="/classes/add" element={<AddClass />} />
+      <Route path="/classes/list" element={<ClassList />} />
       <Route path="/attendance" element={<Attendance />} />
       <Route path="/attendance-list" element={<AttendanceList />} />
       <Route path="/add-sale" element={<AddSale />} />

@@ -4,26 +4,31 @@ import { useNavigate } from "react-router-dom";
 
 function CustomerForm() {
   const navigate = useNavigate();
+
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     address: "",
     phone: "",
     email: "",
-    preferredContact: "email"
+    preferredContact: "email",
   });
 
   const handleChange = (e: any) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     try {
-      //const res = await axios.post("/api/customers", form);
       const res = await axios.post("/api/customers", form);
+
       alert(res.data.message);
+
       navigate("/customers");
     } catch (err: any) {
       if (err.response) {
@@ -35,25 +40,127 @@ function CustomerForm() {
   };
 
   return (
-    <div>
-      <button onClick={() => navigate(-1)} style={{ marginBottom: "20px" }}>
-        ⬅ Go Back
-      </button>
-      <h2>Add Customer</h2>
-      <form onSubmit={handleSubmit}>
-        <input name="firstName" placeholder="First Name" onChange={handleChange} /><br />
-        <input name="lastName" placeholder="Last Name" onChange={handleChange} /><br />
-        <input name="address" placeholder="Address" onChange={handleChange} /><br />
-        <input name="phone" placeholder="Phone" onChange={handleChange} /><br />
-        <input name="email" placeholder="Email" onChange={handleChange} /><br />
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-6 py-12">
 
-        <select name="preferredContact" onChange={handleChange}>
-          <option value="email">Email</option>
-          <option value="phone">Phone</option>
-        </select><br />
+      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-10">
 
-        <button type="submit">Add Customer</button>
-      </form>
+        {/* Back Button */}
+        <button
+          onClick={() => navigate(-1)}
+          className="text-indigo-600 hover:text-indigo-800 font-medium mb-6"
+        >
+          ← Go Back
+        </button>
+
+        {/* Heading */}
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold text-gray-800 mb-3">
+            Add Customer
+          </h1>
+
+          <p className="text-gray-500">
+            Create a new customer profile for the yoga management system.
+          </p>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+
+          {/* First Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              First Name
+            </label>
+
+            <input
+              name="firstName"
+              placeholder="Enter first name"
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Last Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Last Name
+            </label>
+
+            <input
+              name="lastName"
+              placeholder="Enter last name"
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Address */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Address
+            </label>
+
+            <input
+              name="address"
+              placeholder="Enter address"
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Phone */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Phone
+            </label>
+
+            <input
+              name="phone"
+              placeholder="Enter phone number"
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Email
+            </label>
+
+            <input
+              name="email"
+              placeholder="Enter email"
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Preferred Contact */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Preferred Contact
+            </label>
+
+            <select
+              name="preferredContact"
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="email">Email</option>
+              <option value="phone">Phone</option>
+            </select>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl text-lg font-semibold transition duration-300 shadow-lg"
+          >
+            Add Customer
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
