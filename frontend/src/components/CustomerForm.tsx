@@ -15,10 +15,18 @@ function CustomerForm() {
     preferredContact: "email",
   });
 
+  const [errors, setErrors] = useState<any>({});
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
+    });
+
+    // Remove error while typing
+    setErrors({
+      ...errors,
+      [e.target.name]: "",
     });
   };
 
@@ -47,6 +55,44 @@ function CustomerForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const newErrors: any = {};
+
+    // First Name Validation
+    if (!form.firstName.trim()) {
+      newErrors.firstName = "First name is required";
+    }
+
+    // Last Name Validation
+    if (!form.lastName.trim()) {
+      newErrors.lastName = "Last name is required";
+    }
+
+    // Address Validation
+    if (!form.address.trim()) {
+      newErrors.address = "Address is required";
+    }
+
+    // Phone Validation
+    if (!form.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    } else if (!/^[0-9]{10}$/.test(form.phone)) {
+      newErrors.phone = "Phone number must be 10 digits";
+    }
+
+    // Email Validation
+    if (!form.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^\S+@\S+\.\S+$/.test(form.email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    setErrors(newErrors);
+
+    // Stop submit if errors exist
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
 
     try {
       const res = id
@@ -103,8 +149,15 @@ function CustomerForm() {
               placeholder="Enter first name"
               value={form.firstName}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`w-full border rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 ${
+                errors.firstName
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-indigo-500"
+              }`}
             />
+            {errors.firstName && (
+              <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+            )}
           </div>
 
           {/* Last Name */}
@@ -118,8 +171,15 @@ function CustomerForm() {
               placeholder="Enter last name"
               value={form.lastName}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`w-full border rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 ${
+                errors.lastName
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-indigo-500"
+              }`}
             />
+            {errors.lastName && (
+              <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+            )}
           </div>
 
           {/* Address */}
@@ -133,8 +193,15 @@ function CustomerForm() {
               placeholder="Enter address"
               value={form.address}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`w-full border rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 ${
+                errors.address
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-indigo-500"
+              }`}
             />
+            {errors.address && (
+              <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+            )}
           </div>
 
           {/* Phone */}
@@ -145,11 +212,18 @@ function CustomerForm() {
 
             <input
               name="phone"
-              placeholder="Enter phone number"
+              placeholder="Enter phone number (10 digits)"
               value={form.phone}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`w-full border rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 ${
+                errors.phone
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-indigo-500"
+              }`}
             />
+            {errors.phone && (
+              <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+            )}
           </div>
 
           {/* Email */}
@@ -160,11 +234,19 @@ function CustomerForm() {
 
             <input
               name="email"
+              type="email"
               placeholder="Enter email"
               value={form.email}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`w-full border rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 ${
+                errors.email
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-indigo-500"
+              }`}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
 
           {/* Preferred Contact */}
